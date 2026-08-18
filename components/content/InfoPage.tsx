@@ -1,0 +1,2 @@
+import { PageIntro,PageShell } from "@/components/ui/PageShell"; import type { ReactNode } from "react";
+export function InfoPage({eyebrow,title,description,children}:{eyebrow:string;title:string;description:string;children:ReactNode}){return <PageShell><PageIntro eyebrow={eyebrow} title={title} description={description}/><section className="prose-panel section-shell">{children}</section></PageShell>}

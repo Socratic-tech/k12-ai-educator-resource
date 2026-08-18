@@ -1,0 +1,2 @@
+import type { AiLevel, GradeBand, Interest, Role, Subject } from "./profile";
+export type ContentItem = { id:string; title:string; summary:string; contentType:"learning"|"use-case"|"student-ai"|"prompt"|"current-update"; gradeBands:GradeBand[]; subjects:Subject[]; roles:Role[]; interests:Interest[]; aiLevels:AiLevel[]; estimatedMinutes?:number; body:string; relatedPromptIds?:string[]; cautionNotes?:string[]; reviewedDate?:string };

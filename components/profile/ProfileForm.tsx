@@ -1,0 +1,28 @@
+"use client";
+import { useEffect,useState } from "react"; import { useRouter } from "next/navigation";
+import { gradeBands } from "@/data/gradeBands"; import { subjects } from "@/data/subjects"; import { interests } from "@/data/interests";
+import { clearProfile,loadProfile,saveProfile } from "@/lib/profileStorage";
+import type { AiLevel,EducatorProfile,GradeBand,Interest,Role,Subject } from "@/types/profile";
+
+const roles:{value:Role;label:string}[]=[{value:"classroom-teacher",label:"Classroom teacher"},{value:"specialist",label:"Specialist teacher"},{value:"special-education",label:"Special education"},{value:"instructional-support",label:"Instructional support"},{value:"library-media",label:"Library / media"},{value:"counselor",label:"Counselor"},{value:"administrator",label:"Administrator"},{value:"other",label:"Other"}];
+const levels:{value:AiLevel;label:string;detail:string}[]=[{value:"starting",label:"Just starting",detail:"I’m learning the basics"},{value:"experimented",label:"Experimented",detail:"I’ve tried an AI tool"},{value:"sometimes",label:"Sometimes",detail:"I use it for a few tasks"},{value:"regularly",label:"Regularly",detail:"It’s part of my workflow"},{value:"leader",label:"Leader",detail:"I help others use AI"}];
+const initial={role:"specialist" as Role,gradeBands:["6-8"] as GradeBand[],subjects:["physical-education"] as Subject[],aiLevel:"starting" as AiLevel,interests:["differentiation"] as Interest[]};
+function toggle<T extends string>(list:T[],value:T){return list.includes(value)?list.filter(item=>item!==value):[...list,value]}
+
+export function ProfileForm(){
+ const router=useRouter(); const [form,setForm]=useState(initial); const [ready,setReady]=useState(false); const [message,setMessage]=useState("");
+ useEffect(()=>{const frame=window.requestAnimationFrame(()=>{const saved=loadProfile();if(saved)setForm(saved);setReady(true)});return()=>window.cancelAnimationFrame(frame)},[]);
+ function submit(event:React.FormEvent){event.preventDefault();if(!form.gradeBands.length||!form.subjects.length){setMessage("Choose at least one grade band and teaching assignment.");return}saveProfile({...form,updatedAt:new Date().toISOString()} as EducatorProfile);router.push(form.subjects.includes("physical-education")?"/ai-for-my-job/physical-education":"/ai-for-my-job")}
+ function clear(){clearProfile();setForm(initial);setMessage("Profile cleared. You can keep browsing without one.")}
+ if(!ready)return <p className="loading-note">Loading your interests…</p>;
+ return <form className="profile-form" onSubmit={submit}>
+  <div className="form-intro"><p>Choose only what is useful. This information stays in your browser and only changes what appears first.</p><span>A starter example is selected. Change any choice.</span></div>
+  <fieldset><legend>1. What is your role?</legend><div className="choice-grid choice-grid--role">{roles.map(option=><label className={form.role===option.value?"choice is-selected":"choice"} key={option.value}><input type="radio" name="role" value={option.value} checked={form.role===option.value} onChange={()=>setForm({...form,role:option.value})}/><span>{option.label}</span></label>)}</div></fieldset>
+  <fieldset><legend>2. Which grade bands do you support? <span>Select all that apply</span></legend><div className="choice-grid">{gradeBands.map(option=><label className={form.gradeBands.includes(option.value)?"choice is-selected":"choice"} key={option.value}><input type="checkbox" checked={form.gradeBands.includes(option.value)} onChange={()=>setForm({...form,gradeBands:toggle(form.gradeBands,option.value)})}/><span>{option.label}</span></label>)}</div></fieldset>
+  <fieldset><legend>3. What do you teach or support? <span>Select all that apply</span></legend><div className="choice-grid choice-grid--subjects">{subjects.map(option=><label className={form.subjects.includes(option.value)?"choice is-selected":"choice"} key={option.value}><input type="checkbox" checked={form.subjects.includes(option.value)} onChange={()=>setForm({...form,subjects:toggle(form.subjects,option.value)})}/><span>{option.label}</span></label>)}</div></fieldset>
+  <fieldset><legend>4. Where are you with AI?</legend><div className="choice-grid choice-grid--levels">{levels.map(option=><label className={form.aiLevel===option.value?"choice is-selected":"choice"} key={option.value}><input type="radio" name="ai-level" aria-label={`${option.label}: ${option.detail}`} checked={form.aiLevel===option.value} onChange={()=>setForm({...form,aiLevel:option.value})}/><span><strong>{option.label}</strong><small>{option.detail}</small></span></label>)}</div></fieldset>
+  <fieldset><legend>5. What would you like help with? <span>Choose up to 5</span></legend><div className="choice-grid choice-grid--subjects">{interests.map(option=>{const checked=form.interests.includes(option.value);const disabled=!checked&&form.interests.length>=5;return <label className={checked?"choice is-selected":"choice"} data-disabled={disabled||undefined} key={option.value}><input type="checkbox" checked={checked} disabled={disabled} onChange={()=>setForm({...form,interests:toggle(form.interests,option.value)})}/><span>{option.label}</span></label>})}</div><p className="field-help">{form.interests.length} of 5 selected</p></fieldset>
+  {message&&<p className="form-message" role="status">{message}</p>}
+  <div className="form-actions"><button className="button button--primary" type="submit">Save and show what’s relevant</button><button className="text-button" type="button" onClick={clear}>Clear my profile</button><button className="text-button" type="button" onClick={()=>router.push("/ai-for-my-job")}>Browse without a profile</button></div>
+ </form>
+}

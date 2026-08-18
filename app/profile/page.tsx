@@ -1,0 +1,3 @@
+import type { Metadata } from "next"; import { ProfileForm } from "@/components/profile/ProfileForm"; import { PageIntro,PageShell } from "@/components/ui/PageShell"; import { pageMetadata } from "@/lib/pageMetadata";
+export const metadata:Metadata=pageMetadata("My Interests","Optionally save educator interests on this device to reorder relevant pathways.");
+export default function ProfilePage(){return <PageShell><PageIntro eyebrow="My educator profile" title="Make this resource relevant to you" description="Tell us a little about your teaching assignment and what you want to do. You can change or clear this anytime."/><section className="section-shell narrow-section"><ProfileForm/></section></PageShell>}

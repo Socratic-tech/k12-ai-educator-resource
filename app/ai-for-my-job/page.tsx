@@ -1,0 +1,3 @@
+import type { Metadata } from "next"; import { PathwayDirectory } from "@/components/subjects/PathwayDirectory"; import { PageIntro,PageShell } from "@/components/ui/PageShell"; import { pageMetadata } from "@/lib/pageMetadata";
+export const metadata:Metadata=pageMetadata("AI for My Job","Discipline-authentic, educator-reviewed AI guidance for K-12 teaching assignments.");
+export default function MyJobPage(){return <PageShell><PageIntro eyebrow="AI for my job" title="Start with what you teach" description="Explore guidance grounded in the actual work of your subject, grade band, and educator role. Personalization changes the order—not what you can access."/><section className="section-shell pathway-directory-section"><PathwayDirectory/></section></PageShell>}

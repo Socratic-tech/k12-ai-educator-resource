@@ -1,0 +1,10 @@
+import assert from "node:assert/strict"; import test from "node:test";
+import { promptTemplates } from "../data/promptTemplates.ts"; import { generateWorkflowPrompt } from "../lib/promptGeneration.ts"; import { scoreContent } from "../lib/personalization.ts"; import { pathwayContentItems } from "../content/subjects/pathways.ts";
+
+test("all eight workflows generate complete deterministic prompts",()=>{assert.equal(promptTemplates.length,8);for(const template of promptTemplates){const prompt=generateWorkflowPrompt(template.id,template.defaults);assert.ok(prompt.length>400,`${template.id} prompt should be substantive`);assert.doesNotMatch(prompt,/undefined|null/i);assert.match(prompt,/Do not assume|Do not request|Do not assume details/i)}});
+
+test("prompt forms never request prohibited student information",()=>{const labels=promptTemplates.flatMap(template=>template.fields.flatMap(field=>[field.label,field.hint])).join(" ");assert.doesNotMatch(labels,/student name|student id|identifiable grade|medical data|IEP document|504 document|disciplinary record/i);assert.match(labels,/without identifying|without names|Do not|identifiable student/i)});
+
+test("personalization gives the strongest score to a matching pathway",()=>{const profile={role:"specialist",gradeBands:["6-8"],subjects:["music"],aiLevel:"starting",interests:["lesson-planning","assessment"],updatedAt:"2026-08-18T00:00:00.000Z"};const music=pathwayContentItems.find(item=>item.id==="music");const art=pathwayContentItems.find(item=>item.id==="visual-arts");assert.ok(music&&art);assert.ok(scoreContent(music,profile)>scoreContent(art,profile))});
+
+test("Day 1 PE prompt wording remains intact",()=>{const template=promptTemplates[0];const prompt=generateWorkflowPrompt("differentiate-activity",template.defaults);assert.match(prompt,/preserving the primary learning objective rather than simply making the activity easier/);assert.match(prompt,/physical, medical, IEP, 504, legal, safety, or district-specific judgment|professional, medical, IEP, 504, legal, safety, or district-specific judgment/)});

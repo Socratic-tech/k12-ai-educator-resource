@@ -1,0 +1,9 @@
+export const fiveMinuteSections=[
+ {title:"What is generative AI?",body:"Generative AI is software that produces new text, images, audio, or other content in response to instructions. It predicts plausible patterns from training data; it does not think, understand, or know your students."},
+ {title:"Why did AI suddenly become a big deal?",body:"Recent systems became much easier to use through everyday language. That accessibility—not a sudden arrival of perfect intelligence—put powerful pattern-generation tools in many people’s hands."},
+ {title:"What is AI good at?",body:"It can quickly brainstorm options, reorganize information, draft starting points, vary examples, summarize text you are permitted to share, and help you examine a task from different angles."},
+ {title:"What is AI not reliable at?",body:"It can invent facts, sources, policies, or quotations and present them confidently. It lacks your context, may reproduce bias, and cannot judge whether an idea is safe, developmentally appropriate, or feasible in your setting."},
+ {title:"What does AI mean for educators?",body:"Treat it as a drafting and thinking partner, not an authority. Protect private information, verify outputs, and use your knowledge of learners, content, policy, and context to decide what is useful."},
+ {title:"What does AI mean for students?",body:"Students need clear expectations that fit the learning goal. They also need practice questioning outputs, disclosing appropriate use, protecting privacy, and recognizing when AI gets something wrong."},
+ {title:"What should I do next?",body:"Choose one low-risk task, provide useful context without personal student information, ask for a structured response, and review every result. Start with something you already know well enough to evaluate."},
+];
