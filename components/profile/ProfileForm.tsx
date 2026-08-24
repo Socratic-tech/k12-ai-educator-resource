@@ -6,7 +6,7 @@ import type { AiLevel,EducatorProfile,GradeBand,Interest,Role,Subject } from "@/
 
 const roles:{value:Role;label:string}[]=[{value:"classroom-teacher",label:"Classroom teacher"},{value:"specialist",label:"Specialist teacher"},{value:"special-education",label:"Special education"},{value:"instructional-support",label:"Instructional support"},{value:"library-media",label:"Library / media"},{value:"counselor",label:"Counselor"},{value:"administrator",label:"Administrator"},{value:"other",label:"Other"}];
 const levels:{value:AiLevel;label:string;detail:string}[]=[{value:"starting",label:"Just starting",detail:"I’m learning the basics"},{value:"experimented",label:"Experimented",detail:"I’ve tried an AI tool"},{value:"sometimes",label:"Sometimes",detail:"I use it for a few tasks"},{value:"regularly",label:"Regularly",detail:"It’s part of my workflow"},{value:"leader",label:"Leader",detail:"I help others use AI"}];
-const initial={role:"specialist" as Role,gradeBands:["6-8"] as GradeBand[],subjects:["physical-education"] as Subject[],aiLevel:"starting" as AiLevel,interests:["differentiation"] as Interest[]};
+const initial={role:"specialist" as Role,gradeBands:["6-8"] as GradeBand[],subjects:["physical-education"] as Subject[],specificTeachingArea:"",aiLevel:"starting" as AiLevel,interests:["differentiation"] as Interest[]};
 function toggle<T extends string>(list:T[],value:T){return list.includes(value)?list.filter(item=>item!==value):[...list,value]}
 
 export function ProfileForm(){
@@ -20,8 +20,22 @@ export function ProfileForm(){
   <fieldset><legend>1. What is your role?</legend><div className="choice-grid choice-grid--role">{roles.map(option=><label className={form.role===option.value?"choice is-selected":"choice"} key={option.value}><input type="radio" name="role" value={option.value} checked={form.role===option.value} onChange={()=>setForm({...form,role:option.value})}/><span>{option.label}</span></label>)}</div></fieldset>
   <fieldset><legend>2. Which grade bands do you support? <span>Select all that apply</span></legend><div className="choice-grid">{gradeBands.map(option=><label className={form.gradeBands.includes(option.value)?"choice is-selected":"choice"} key={option.value}><input type="checkbox" checked={form.gradeBands.includes(option.value)} onChange={()=>setForm({...form,gradeBands:toggle(form.gradeBands,option.value)})}/><span>{option.label}</span></label>)}</div></fieldset>
   <fieldset><legend>3. What do you teach or support? <span>Select all that apply</span></legend><div className="choice-grid choice-grid--subjects">{subjects.map(option=><label className={form.subjects.includes(option.value)?"choice is-selected":"choice"} key={option.value}><input type="checkbox" checked={form.subjects.includes(option.value)} onChange={()=>setForm({...form,subjects:toggle(form.subjects,option.value)})}/><span>{option.label}</span></label>)}</div></fieldset>
-  <fieldset><legend>4. Where are you with AI?</legend><div className="choice-grid choice-grid--levels">{levels.map(option=><label className={form.aiLevel===option.value?"choice is-selected":"choice"} key={option.value}><input type="radio" name="ai-level" aria-label={`${option.label}: ${option.detail}`} checked={form.aiLevel===option.value} onChange={()=>setForm({...form,aiLevel:option.value})}/><span><strong>{option.label}</strong><small>{option.detail}</small></span></label>)}</div></fieldset>
-  <fieldset><legend>5. What would you like help with? <span>Choose up to 5</span></legend><div className="choice-grid choice-grid--subjects">{interests.map(option=>{const checked=form.interests.includes(option.value);const disabled=!checked&&form.interests.length>=5;return <label className={checked?"choice is-selected":"choice"} data-disabled={disabled||undefined} key={option.value}><input type="checkbox" checked={checked} disabled={disabled} onChange={()=>setForm({...form,interests:toggle(form.interests,option.value)})}/><span>{option.label}</span></label>})}</div><p className="field-help">{form.interests.length} of 5 selected</p></fieldset>
+  <fieldset>
+   <legend>4. Want to be more specific? <span>Optional</span></legend>
+   <div className="field">
+    <label htmlFor="specific-teaching-area">Specific teaching assignment</label>
+    <input
+     id="specific-teaching-area"
+     type="text"
+     value={form.specificTeachingArea || ""}
+     onChange={(event)=>setForm({...form,specificTeachingArea:event.target.value})}
+     placeholder="e.g., 7th grade PE, Beginning Band, Spanish II, AP Biology"
+    />
+    <p className="field-help">This will help prefill prompt builders with language that better matches your actual assignment.</p>
+   </div>
+  </fieldset>
+  <fieldset><legend>5. Where are you with AI?</legend><div className="choice-grid choice-grid--levels">{levels.map(option=><label className={form.aiLevel===option.value?"choice is-selected":"choice"} key={option.value}><input type="radio" name="ai-level" aria-label={`${option.label}: ${option.detail}`} checked={form.aiLevel===option.value} onChange={()=>setForm({...form,aiLevel:option.value})}/><span><strong>{option.label}</strong><small>{option.detail}</small></span></label>)}</div></fieldset>
+  <fieldset><legend>6. What would you like help with? <span>Choose up to 5</span></legend><div className="choice-grid choice-grid--subjects">{interests.map(option=>{const checked=form.interests.includes(option.value);const disabled=!checked&&form.interests.length>=5;return <label className={checked?"choice is-selected":"choice"} data-disabled={disabled||undefined} key={option.value}><input type="checkbox" checked={checked} disabled={disabled} onChange={()=>setForm({...form,interests:toggle(form.interests,option.value)})}/><span>{option.label}</span></label>})}</div><p className="field-help">{form.interests.length} of 5 selected</p></fieldset>
   {message&&<p className="form-message" role="status">{message}</p>}
   <div className="form-actions"><button className="button button--primary" type="submit">Save and show what’s relevant</button><button className="text-button" type="button" onClick={clear}>Clear my profile</button><button className="text-button" type="button" onClick={()=>router.push("/ai-for-my-job")}>Browse without a profile</button></div>
  </form>

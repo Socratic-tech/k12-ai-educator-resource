@@ -1,5 +1,5 @@
-import Link from "next/link";
 import type { Metadata } from "next";
+import Link from "next/link";
 import { CautionBox } from "@/components/content/CautionBox";
 import { PageShell } from "@/components/ui/PageShell";
 import { peCautions,peUseCases } from "@/content/subjects/physicalEducation";

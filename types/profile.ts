@@ -4,4 +4,4 @@ export type Subject = "elementary" | "ela" | "mathematics" | "science" | "social
 export type AiLevel = "starting" | "experimented" | "sometimes" | "regularly" | "leader";
 export type Interest = "lesson-planning" | "differentiation" | "assessment" | "feedback" | "student-ai" | "academic-integrity" | "productivity" | "family-communication" | "accessibility" | "ai-literacy" | "assignment-redesign" | "emerging-ai";
 
-export type EducatorProfile = { role: Role; gradeBands: GradeBand[]; subjects: Subject[]; aiLevel: AiLevel; interests: Interest[]; updatedAt: string };
+export type EducatorProfile = { role: Role; gradeBands: GradeBand[]; subjects: Subject[]; specificTeachingArea?: string; aiLevel: AiLevel; interests: Interest[]; updatedAt: string };

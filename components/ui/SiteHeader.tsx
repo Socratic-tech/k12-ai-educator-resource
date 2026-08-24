@@ -1,3 +1,4 @@
 import Link from "next/link";
+
 const nav=[{href:"/catch-up",label:"Catch Me Up"},{href:"/ai-for-my-job",label:"AI for My Job"},{href:"/help-me",label:"Help Me"},{href:"/prompt-builder",label:"Prompt Builder"},{href:"/students-ai",label:"Students + AI"},{href:"/stay-current",label:"Stay Current"}];
 export function SiteHeader(){return <><a className="skip-link" href="#main">Skip to main content</a><header className="site-header"><div className="nav-shell"><Link className="brand" href="/" aria-label="K-12 AI Educator Resource home"><span className="brand-mark" aria-hidden="true">K–12</span><span>AI Educator Resource</span></Link><nav aria-label="Primary navigation">{nav.map(item=><Link href={item.href} key={item.href}>{item.label}</Link>)}</nav><Link className="profile-link" href="/profile">My Interests</Link></div></header></>}

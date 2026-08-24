@@ -13,6 +13,8 @@ const eslintConfig = defineConfig([
     "dist/**",
     "out/**",
     "build/**",
+    "**/*.bak",
+    "**/*.before-*",
     "next-env.d.ts",
   ]),
   eslint.configs.recommended,

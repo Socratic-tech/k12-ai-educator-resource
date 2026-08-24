@@ -259,3 +259,73 @@ legend span { color:var(--muted); font-size:.83rem; font-weight:500; }
 @media (max-width:850px) { .nav-shell{flex-wrap:wrap;padding-block:.65rem;gap:.7rem 1rem}.nav-shell nav{display:flex;order:3;width:100%;margin:0;overflow-x:auto;padding-bottom:.25rem}.nav-shell nav a{flex:0 0 auto}.profile-link{margin-left:auto}.hero{grid-template-columns:1fr;gap:2.5rem}.hero-note{max-width:600px}.card-grid{grid-template-columns:1fr}.pathway-card{min-height:240px}.students-callout{align-items:flex-start;flex-direction:column}.feature-row,.pe-example,.feedback-layout{grid-template-columns:1fr}.article-layout,.twenty-layout{grid-template-columns:1fr}.article-index,.twenty-index{position:static;max-height:none}.subject-grid,.workflow-grid{grid-template-columns:repeat(2,1fr)}.three-up{grid-template-columns:1fr}.consideration-grid{grid-template-columns:1fr}.decision-framework{grid-template-columns:1fr;gap:1rem}.trust-strip{grid-template-columns:1fr} }
 @media (max-width:540px) { .section-shell,.nav-shell{width:min(100% - 2rem,1160px)}.brand>span:last-child{max-width:140px;line-height:1.1}.profile-link{font-size:.82rem}.section-heading{display:block}.section-heading>p{margin-top:1rem}.hero-actions .button{width:100%}.footer-inner{align-items:flex-start;flex-direction:column;justify-content:center}.footer-links{flex-wrap:wrap}.form-intro{display:block}.form-intro span{display:block;margin-top:.7rem}.choice-grid,.choice-grid--role,.choice-grid--subjects,.choice-grid--levels{grid-template-columns:1fr}.form-actions{align-items:flex-start;flex-direction:column}.next-step,.directory-note{align-items:flex-start;flex-direction:column}.subject-grid,.workflow-grid,.use-case-grid,.catch-up-options,.workflow-tabs,.category-grid{grid-template-columns:1fr}.subject-card--active,.workflow-card--ready,.use-case-card.is-featured,.pathway-directory .is-ranked{grid-column:auto}.pe-example{padding:1.5rem}.builder-form{padding:1rem}.prompt-result-header{align-items:flex-start;flex-direction:column}.button--copy{width:100%}.check-list li,.decision-framework li{grid-template-columns:1fr;gap:.4rem}.catch-topic dl{grid-template-columns:1fr}.catch-topic .think-about{grid-column:auto} }
 @media (prefers-reduced-motion:reduce) { html{scroll-behavior:auto}*,*::before,*::after{transition-duration:.01ms!important;animation-duration:.01ms!important} }
+
+/* Compact prompt-builder experience */
+.builder-form .field-stack {
+  gap: 1rem;
+}
+
+.builder-form .field {
+  margin-bottom: .35rem;
+}
+
+.builder-form input,
+.builder-form select {
+  min-height: 48px;
+}
+
+.builder-form textarea {
+  min-height: 110px;
+}
+
+.builder-advanced {
+  margin-top: 1.25rem;
+  padding: 1rem 1.1rem;
+  border: 1px solid var(--line);
+  border-radius: .65rem;
+  background: #faf9f5;
+}
+
+.builder-advanced summary {
+  cursor: pointer;
+  color: var(--green);
+  font-weight: 750;
+}
+
+.builder-advanced[open] summary {
+  margin-bottom: 1rem;
+}
+
+.result-placeholder {
+  padding: 1.6rem;
+}
+
+.result-placeholder h2 {
+  margin-top: .25rem;
+  font-size: 1.65rem;
+}
+
+.result-placeholder ol {
+  margin-bottom: 0;
+  padding-left: 1.25rem;
+}
+
+.result-placeholder li + li {
+  margin-top: .35rem;
+}
+
+/* Keep the builder itself visually dominant */
+.builder-layout {
+  grid-template-columns: minmax(0, 1.35fr) minmax(280px, .65fr);
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .builder-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .result-placeholder {
+    padding: 1.25rem;
+  }
+}
