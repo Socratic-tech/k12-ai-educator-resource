@@ -1,6 +1,7 @@
 import assert from "node:assert/strict"; import test from "node:test";
 import { promptTemplates } from "../data/promptTemplates.ts"; import { generateWorkflowPrompt } from "../lib/promptGeneration.ts"; import { scoreContent } from "../lib/personalization.ts"; import { pathwayContentItems } from "../content/subjects/pathways.ts";
 import { getProfilePromptDefaults, profileGradeLabel, profileSubjectLabel } from "../lib/profilePromptDefaults.ts";
+import { getPromptFieldOptions } from "../lib/promptFieldOptions.ts";
 
 test("all eight workflows generate complete deterministic prompts",()=>{assert.equal(promptTemplates.length,8);for(const template of promptTemplates){const prompt=generateWorkflowPrompt(template.id,template.defaults);assert.ok(prompt.length>400,`${template.id} prompt should be substantive`);assert.doesNotMatch(prompt,/undefined|null/i);assert.match(prompt,/Do not assume|Do not request|Do not assume details/i)}});
 
@@ -15,3 +16,5 @@ test("select fields have usable options and valid defaults",()=>{for(const templ
 test("advanced fields are optional and every workflow keeps a short core",()=>{for(const template of promptTemplates){const coreFields=template.fields.filter(field=>!field.advanced);assert.ok(coreFields.length>=2,`${template.id} should have a useful core`);assert.ok(coreFields.length<=5,`${template.id} core should remain quick to complete`);for(const field of template.fields.filter(item=>item.advanced))assert.equal(field.required,false,`${template.id}.${field.key} advanced fields must be optional`)}});
 
 test("profile prompt defaults prefer specific teaching context",()=>{const profile={role:"specialist",gradeBands:["6-8","9-12"],subjects:["music","visual-arts"],specificTeachingArea:"  Beginning Band  ",aiLevel:"sometimes",interests:["lesson-planning"],updatedAt:"2026-08-24T00:00:00.000Z"};assert.equal(profileGradeLabel(profile),"Grades 6–8, Grades 9–12");assert.equal(profileSubjectLabel(profile),"Beginning Band");assert.deepEqual(getProfilePromptDefaults(profile),{gradeLevel:"Grades 6–8, Grades 9–12",subject:"Beginning Band"});assert.deepEqual(getProfilePromptDefaults(null),{gradeLevel:"",subject:""})});
+
+test("select fields preserve profile-prefilled values outside their standard options",()=>{const gradeField=promptTemplates[0].fields.find(field=>field.key==="gradeLevel");assert.ok(gradeField);const combined="Grades 6–8, Grades 9–12";const options=getPromptFieldOptions(gradeField,combined);assert.equal(options[0],combined);assert.equal(options.filter(option=>option===combined).length,1);assert.deepEqual(getPromptFieldOptions(gradeField,"Grades 6–8"),gradeField.options)});

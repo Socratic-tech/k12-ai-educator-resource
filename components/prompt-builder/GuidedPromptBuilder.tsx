@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { generateWorkflowPrompt } from "@/lib/promptGeneration";
+import { getPromptFieldOptions } from "@/lib/promptFieldOptions";
 import { loadProfile } from "@/lib/profileStorage";
 import { getProfilePromptDefaults } from "@/lib/profilePromptDefaults";
 import type { PromptField, PromptTemplate } from "@/types/prompt";
@@ -116,7 +117,7 @@ export function GuidedPromptBuilder({ template }: { template: PromptTemplate }) 
             aria-describedby={`${id}-hint`}
           >
             <option value="">Choose an option</option>
-            {field.options?.map((option) => (
+            {getPromptFieldOptions(field, value).map((option) => (
               <option value={option} key={option}>
                 {option}
               </option>
